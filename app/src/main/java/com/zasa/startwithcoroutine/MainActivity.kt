@@ -15,6 +15,8 @@ private const val TAG = "MainActivity"
 class MainActivity : AppCompatActivity() {
 
     private val RESULT_1 = "results 01"
+    private val RESULT_2 = "results 02"
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -22,28 +24,39 @@ class MainActivity : AppCompatActivity() {
         btnClickMe.setOnClickListener {
 
             CoroutineScope(IO).launch {
-                fakeApiCall()
-                withContext(Main){
-                    tvText.text = fakeApiCall()
+                fakeApiCall1()
+                fakeApiCall2()
+                withContext(Main) {
+                    tvText.text = fakeApiCall1()
+                    tvText.text = fakeApiCall2()
                 }
             }
-
-
         }
     }
 
-    private suspend fun fakeApiCall() : String{
+    private suspend fun fakeApiCall1(): String {
         val results1 = getResults1FromApi()
         return results1
     }
 
-    private suspend fun getResults1FromApi() : String{
+    private suspend fun fakeApiCall2(): String {
+        val results2 = getResults2FromApi()
+        return results2
+    }
+
+    private suspend fun getResults1FromApi(): String {
         logThread("getResults1FromApi")
         delay(2000)
         return RESULT_1
     }
 
-    private fun logThread(methodName : String){
+    private suspend fun getResults2FromApi(): String {
+        logThread("getResults2FromApi")
+        delay(2000)
+        return RESULT_2
+    }
+
+    private fun logThread(methodName: String) {
         println("debug : $methodName - ${Thread.currentThread().name}")
     }
 
